@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "lint-staged": {
+    "*.js": ["standard"]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DaniloLO53/Node-API.git"
@@ -18,6 +26,7 @@
   },
   "homepage": "https://github.com/DaniloLO53/Node-API#readme",
   "devDependencies": {
+    "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
     "standard": "^17.0.0"
   }
