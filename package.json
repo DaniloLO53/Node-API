@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/DaniloLO53/Node-API#readme",
   "devDependencies": {
-    "husky": "^8.0.3",
+    "husky": "^4.3.8",
     "lint-staged": "^13.1.2",
     "standard": "^17.0.0"
   }
