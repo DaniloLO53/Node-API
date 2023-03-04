@@ -1,9 +1,4 @@
-function test() {
+function testinho() {
   return 0;
-}
-
-
-
-
-
+};
 
