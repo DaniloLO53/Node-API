@@ -53,4 +53,12 @@ describe('Login Router', () => {
 
     expect(httpResponse.statusCode).toBe(INTERNAL_ERROR_CODE)
   })
+
+  it('Should return 500 if httpRequest has no body', () => {
+    const httpRequest = {}
+    const sut = new LoginRouter()
+    const httpResponse = sut.route(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(INTERNAL_ERROR_CODE)
+  })
 })
