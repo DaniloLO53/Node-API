@@ -1,6 +1,25 @@
+function isNotObject (arg) {
+  const isArray = Array.isArray(arg)
+  const isString = typeof arg === 'string'
+  const isNumber = typeof arg === 'number'
+  const isBoolean = typeof arg === 'boolean'
+
+  if (
+    isArray ||
+    isString ||
+    isNumber ||
+    isBoolean ||
+    !arg
+  ) {
+    return { statusCode: 500 }
+  }
+}
+
 class LoginRouter {
   route (httpRequest) {
-    if (!httpRequest || !httpRequest.body) {
+    const isNotObjectReturn = isNotObject(httpRequest)
+
+    if (!httpRequest || !httpRequest.body || isNotObjectReturn) {
       return {
         statusCode: 500
       }
@@ -60,5 +79,26 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(INTERNAL_ERROR_CODE)
+  })
+
+  it('Should return 500 if httpRequest is not a object', () => {
+    const httpRequestString = 'any_string'
+    const httpRequestBoolean = false
+    const httpRequestNumber = 0
+    const httpRequestArray = []
+    const httpRequestUndefined = undefined
+
+    const sut = new LoginRouter()
+    const httpResponseString = sut.route(httpRequestString)
+    const httpResponseBoolean = sut.route(httpRequestBoolean)
+    const httpResponseNumber = sut.route(httpRequestNumber)
+    const httpResponseArray = sut.route(httpRequestArray)
+    const httpResponseUndefined = sut.route(httpRequestUndefined)
+
+    expect(httpResponseString.statusCode).toBe(INTERNAL_ERROR_CODE)
+    expect(httpResponseBoolean.statusCode).toBe(INTERNAL_ERROR_CODE)
+    expect(httpResponseNumber.statusCode).toBe(INTERNAL_ERROR_CODE)
+    expect(httpResponseArray.statusCode).toBe(INTERNAL_ERROR_CODE)
+    expect(httpResponseUndefined.statusCode).toBe(INTERNAL_ERROR_CODE)
   })
 })
