@@ -1,38 +1,5 @@
-function isNotObject (arg) {
-  const isArray = Array.isArray(arg)
-  const isString = typeof arg === 'string'
-  const isNumber = typeof arg === 'number'
-  const isBoolean = typeof arg === 'boolean'
-
-  if (
-    isArray ||
-    isString ||
-    isNumber ||
-    isBoolean ||
-    !arg
-  ) {
-    return { statusCode: 500 }
-  }
-}
-
-class LoginRouter {
-  route (httpRequest) {
-    const isNotObjectReturn = isNotObject(httpRequest)
-
-    if (!httpRequest || !httpRequest.body || isNotObjectReturn) {
-      return {
-        statusCode: 500
-      }
-    }
-    const { EMAIL, PASSWORD } = httpRequest.body
-
-    if (!EMAIL || !PASSWORD) {
-      return {
-        statusCode: 400
-      }
-    }
-  }
-}
+const MissingParamError = require('../helpers/errors/missingParamError.errors')
+const LoginRouter = require('./login.router')
 
 describe('Login Router', () => {
   const PASSWORD = 'any_password'
@@ -51,6 +18,7 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(BAD_REQUEST_CODE)
+    expect(httpResponse.body).toEqual(new MissingParamError('email'))
   })
 
   it('Should return 400 if no password is provided', () => {
@@ -64,6 +32,7 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(BAD_REQUEST_CODE)
+    expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
   it('Should return 500 if no httpRequest is received', () => {

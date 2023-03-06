@@ -8,7 +8,7 @@
     "test:staged": "jest",
     "prepare": "husky install",
     "watch": "nodemon ./src/config/server.js",
-    "start": "node ./src/config/server.js"
+    "start": "node --experimental-vm-modules ./src/config/server.js"
   },
   "lint-staged": {
     "*.js": [
