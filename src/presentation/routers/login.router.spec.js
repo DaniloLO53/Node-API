@@ -1,5 +1,10 @@
 class LoginRouter {
   route (httpRequest) {
+    if (!httpRequest || !httpRequest.body) {
+      return {
+        statusCode: 500
+      }
+    }
     const { EMAIL, PASSWORD } = httpRequest.body
 
     if (!EMAIL || !PASSWORD) {
@@ -11,10 +16,12 @@ class LoginRouter {
 }
 
 describe('Login Router', () => {
-  it('Should return 400 if no email is provided', () => {
-    const PASSWORD = 'any_password'
-    const BAD_REQUEST_CODE = 400
+  const PASSWORD = 'any_password'
+  const EMAIL = 'any_email'
+  const BAD_REQUEST_CODE = 400
+  const INTERNAL_ERROR_CODE = 500
 
+  it('Should return 400 if no email is provided', () => {
     const httpRequest = {
       body: {
         PASSWORD
@@ -28,9 +35,6 @@ describe('Login Router', () => {
   })
 
   it('Should return 400 if no password is provided', () => {
-    const EMAIL = 'any_email'
-    const BAD_REQUEST_CODE = 400
-
     const httpRequest = {
       body: {
         EMAIL
@@ -41,5 +45,12 @@ describe('Login Router', () => {
     const httpResponse = sut.route(httpRequest)
 
     expect(httpResponse.statusCode).toBe(BAD_REQUEST_CODE)
+  })
+
+  it('Should return 500 if no httpRequest is received', () => {
+    const sut = new LoginRouter()
+    const httpResponse = sut.route()
+
+    expect(httpResponse.statusCode).toBe(INTERNAL_ERROR_CODE)
   })
 })
